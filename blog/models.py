@@ -19,6 +19,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 @python_2_unicode_compatible
 class Tag(models.Model):
@@ -31,6 +34,9 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 @python_2_unicode_compatible
@@ -53,14 +59,25 @@ class Post(models.Model):
     category = models.ForeignKey(Category)
     excerpt = models.CharField(max_length=200, blank=True)
 
-    created_time = models.DateTimeField()
-    modified_time = models.DateTimeField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now_add=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
     title = models.CharField(max_length=70)
 
+    views = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.title
 
+    # 获取文章的url
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    # 阅读量+1
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
+
+    class Meta:
+        ordering = ['-created_time', 'title']
