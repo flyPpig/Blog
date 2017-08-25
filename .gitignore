@@ -1,4 +1,5 @@
 #python
 *.py[cod]
 /__pycache__/
-
+/migrations/
+*.sqlite3
