@@ -19,12 +19,12 @@
             <div class="entry-content clearfix">
                 <p>{{ post.excerpt }}...</p>
                 <div class="read-more cl-effect-14">
-                    <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                    <a href="{{ post.get_absolute_url }}" class="more-link">阅读全文</a>
                 </div>
             </div>
         </article>
     {% empty %}
-        <div class="no-post">暂时还没有发布的文章！</div>
+        <div class="no-post">暂时未发布文章！</div>
     {% endfor %}
 
     <!-- 简单分页效果
