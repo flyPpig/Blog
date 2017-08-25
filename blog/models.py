@@ -82,6 +82,7 @@ class Post(models.Model):
         self.views += 1
         self.save(update_fields=['views'])
 
+    # 文章摘要
     def save(self, *args, **kwargs):
 
         if not self.excerpt:

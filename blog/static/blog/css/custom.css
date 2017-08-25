@@ -46,12 +46,12 @@ b {
 }
 
 a {
-    color: #333;
+    color: #000;
 }
 
 a:hover, a:focus {
     text-decoration: none;
-    color: #000;
+    color: rgb(38, 128, 217);
 }
 
 ::selection {
@@ -123,7 +123,7 @@ img {
  */
 
 .logo h1 a {
-    color: #000;
+    color: #ea6f5a;
 }
 
 .logo h1 a:hover {
@@ -228,7 +228,7 @@ img {
 
 .entry-meta {
     text-align: center;
-    color: #DDDDDD;
+    color: #000;
     font-size: 13px;
     margin-bottom: 30px;
 }
@@ -901,5 +901,5 @@ img {
 }
 
 .current a {
-    color: red;
+    color: #ea6f5a;
 }

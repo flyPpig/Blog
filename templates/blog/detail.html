@@ -5,12 +5,12 @@
         <header class="entry-header">
             <h1 class="entry-title">{{ post.title }}</h1>
             <div class="entry-meta">
-                <span class="post-category"><a href="#">{{ post.category.name }}</a></span>
-                <span class="post-date"><a href="#"><time class="entry-date"
-                                                          datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
-                <span class="post-author"><a href="#">{{ post.author }}</a></span>
-                <span class="comments-link"><a href="#">{{ post.comment_set.count }}评论</a></span>
-                <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
+                <span class="post-category">{{ post.category.name }}</span>
+                <span class="post-date"><time class="entry-date"
+                                                          datetime="{{ post.created_time }}">{{ post.created_time }}</time></span>
+                <span class="post-author">{{ post.author }}</span>
+                <span class="comments-link">{{ post.comment_set.count }}评论</span>
+                <span class="views-count">{{ post.views }} 阅读</span>
             </div>
         </header>
         <div class="entry-content clearfix">

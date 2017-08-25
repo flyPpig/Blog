@@ -24,7 +24,101 @@ class IndexView(ListView):
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'post_list'
+    paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        # 获取传给模板的数据,context是一个字典
+        context = super().get_context_data(**kwargs)
+        # paginator 是 Paginator 的一个实例
+        # page_obj 是 Page 的一个实例
+        # is_paginated 是一个布尔变量，指示是否分页
+        paginator = context.get('paginator')
+        page = context.get('page_obj')
+        is_paginated = context.get('is_paginated')
+
+        pagination_data = self.pagination_data(paginator, page, is_paginated)
+        context.update(pagination_data)
+
+        return context
+
+    def pagination_data(self, paginator, page, is_paginated):
+        # 不需要分页
+        if not is_paginated:
+            return {}
+
+        left = []
+        right = []
+        left_has_more = False
+        right_has_more = False
+        # 指示是否显示第一页
+        first = False
+        # 指示是否显示最后一页
+        last = False
+
+        # 当前页码
+        page_number = page.number
+        # 分页后的总页数
+        total_pages = paginator.num_pages
+        # 获得整个分页页码列表，比如分了四页，那么就是 [1, 2, 3, 4]
+        page_range = paginator.page_range
+
+        if page_number == 1:
+            # 若当前为第一页，左边不需要页码数据，只需获取右边的后两页
+            right = page_range[page_number:page_number + 2]
+
+            # 若最右边的页码值比最后一页页码值减去 1 还要小
+            # 说明最右边的页码与最后一页之间还要其他页码
+            # 将 right_has_more置 为 True
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+            # 若最右边的页码值比最后一页页码值小
+            # 需要显示最后一页，将 last 置为 True
+            if right[-1] < total_pages:
+                last = True
+
+        elif page_number == total_pages:
+            # 若当前为最后一页，那么右边不需要页码，只需获取左边的前两页
+            left = page_range[
+                (page_number - 3) if (page_number - 3) > 0 else 0:page_number - 1]
+
+            # 若最左边的页码值比 2 大
+            # 说明与第一页之间还要其他页
+            # 将 left_has_more 置为True
+            if left[0] > 2:
+                left_has_more = True
+            # 若最左边的页码值比第一页页码值大
+            # 需要显示第一页，将 first 置为 True
+            if left[0] > 1:
+                first = True
+
+        else:
+            # 若当前页既不是最后一页也不是第一页
+            # 左边显示前两页，右边显示后两页
+            left = page_range[
+                (page_number - 3) if (page_number - 3) > 0 else 0:page_number - 1]
+            right = page_range[page_number:page_number + 2]
+
+            # 是否显示最后一页及前面的省略号
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+            if right[-1] < total_pages:
+                last = True
+
+            # 是否显示第一页及后面的省略号
+            if left[0] > 2:
+                left_has_more = True
+            if left[0] > 1:
+                first = True
+
+        data = {
+            'first': first,
+            'last': last,
+            'left': left,
+            'right': right,
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+        }
+        return data
 
 # def archives(request, year, month):
 #     """
@@ -34,6 +128,7 @@ class IndexView(ListView):
 #                                     created_time__month=month)
 #     return render(request, 'blog/index.html', context={'post_list':
 #                   post_list})
+
 
 class ArchivesView(IndexView):
 
@@ -115,7 +210,7 @@ class PostDetailView(DetailView):
                                       extensions=[
                                           'markdown.extensions.extra',
                                           'markdown.extensions.codehilite',
-                                          'markdown.markdown.toc',
+                                          'markdown.extensions.toc',
                                       ])
         return post
 
@@ -129,3 +224,15 @@ class PostDetailView(DetailView):
         context.update({'form': form,
                         'comment_list': comment_list})
         return context
+
+
+class TagView(ListView):
+
+    model = Post
+    template_name = 'blog/index.html'
+    context_object_name = 'post_list'
+
+    def get_queryset(self):
+
+        tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
+        return super(TagView, self).get_queryset().filter(tags=tag)
