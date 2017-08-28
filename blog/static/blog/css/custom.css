@@ -27,6 +27,12 @@
 /**
  * 2.0 - General Elements
  */
+article {
+    display: block;
+    border-bottom: 1px solid #eee;
+    padding: 1.5rem 0;
+}
+}
 
 * {
     outline: none;
@@ -215,7 +221,7 @@ img {
 
 .post {
     background: #fff;
-    padding: 30px 30px 0;
+    padding: 30px 30px 30px;
 }
 
 .entry-title {
@@ -240,9 +246,25 @@ img {
     color: #000;
 }
 
-.post-category::after,
+.entry-content .post-category {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #ec6149;
+    color: #ec6149;
+}
+
+
+.entry-content .post-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid #ec6149;
+    color: #ec6149;
+}
+
+
 .post-date::after,
-.post-author::after,
 .comments-link::after {
     content: ' ·';
     color: #000;
