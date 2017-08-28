@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 """Blog_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -21,8 +23,14 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(
         url='/static/images/favicon.ico', permanent=True)),
+
     url(r'^admin/', admin.site.urls),
+    url(r'^users/', include('users.urls')),
+    # 将auth 应用中的urls 模块包含进来
+    url(r'^users/', include('django.contrib.auth.urls')),
+
     url(r'', include('blog.urls')),
     url(r'', include('comments.urls')),
+
     url(r'^all/rss/$', AllPostRssFeed(), name='rss'),
 ]

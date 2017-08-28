@@ -3,6 +3,7 @@
 import markdown
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
 from django.utils.six import python_2_unicode_compatible
@@ -57,7 +58,7 @@ class Post(models.Model):
     title           : 标题
     """
 
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     body = models.TextField()
     category = models.ForeignKey(Category)
     excerpt = models.CharField(max_length=200, blank=True)
