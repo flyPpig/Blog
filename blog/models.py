@@ -8,6 +8,8 @@ from django.utils.html import strip_tags
 from django.contrib.auth.models import User
 from django.utils.six import python_2_unicode_compatible
 
+from ckeditor.fields import RichTextField
+
 
 @python_2_unicode_compatible
 class Category(models.Model):
@@ -59,7 +61,8 @@ class Post(models.Model):
     """
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
-    body = models.TextField()
+    #body = models.TextField()
+    body = RichTextField()
     category = models.ForeignKey(Category)
     excerpt = models.CharField(max_length=200, blank=True)
 
